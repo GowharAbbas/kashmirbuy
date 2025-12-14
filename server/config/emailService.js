@@ -1,31 +1,31 @@
-import http from 'http';
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT), // 587
+  secure: false, // TLS
   auth: {
-      user: process.env.EMAIL,
-      pass: process.env.EMAIL_PASS,
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-
-async function sendEmail(to, subject, text, html){
-  try{
+const sendEmail = async (to, subject, text, html) => {
+  try {
     const info = await transporter.sendMail({
-      from: process.env.EMAIL,
+      from: `"KashmirBuy Support" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text,
       html,
     });
-    return { success: true, messageId: info.messageId};
-  }catch(error){
-     console.error('Error sending email:', error);
-     return {success: false, error: error.message};
-  }
-}
 
-export {sendEmail};
+    console.log("Email sent:", info.messageId);
+    return { success: true };
+  } catch (error) {
+    console.error("Email error:", error);
+    return { success: false, error: error.message };
+  }
+};
+
+export { sendEmail };
