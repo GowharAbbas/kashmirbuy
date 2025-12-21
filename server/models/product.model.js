@@ -67,28 +67,28 @@ const productSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  // discount: {
-  //   type: Number,
-  //   required: true
-  // },
-//   productRam: [
-//   {
-//     type: String,
-//     default: null
-//   }
-// ],
-//   size: [
-//   {
-//     type: String,
-//     default: null
-//   }
-// ],
-//   productWeight: [
-//   {
-//     type: String,
-//     default: null
-//   }
-// ],
+  discount: {
+    type: Number,
+    required: true
+  },
+  productRam: [
+  {
+    type: String,
+    default: null
+  }
+],
+  size: [
+  {
+    type: String,
+    default: null
+  }
+],
+  productWeight: [
+  {
+    type: String,
+    default: null
+  }
+],
 dateCreated: {
     type: Date,
     default: Date.now
