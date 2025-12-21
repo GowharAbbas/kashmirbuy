@@ -26,6 +26,25 @@ import { RiRefund2Line } from "react-icons/ri";
 const Footer = () => {
   const context = useContext(MyContext);
 
+  const socialLinks = [
+    {
+      icon: FaFacebookF,
+      url: "https://www.facebook.com/kashmirbuy.com",
+    },
+    {
+      icon: AiOutlineYoutube,
+      url: "https://www.youtube.com/",
+    },
+    {
+      icon: FaInstagram,
+      url: "https://www.instagram.com/",
+    },
+    {
+      icon: FaXTwitter,
+      url: "https://twitter.com/",
+    },
+  ];
+
   return (
     <>
       <footer className="!py-6 bg-[#fafafa]">
@@ -73,12 +92,18 @@ const Footer = () => {
                 kashmirbuy30@gmail.com
               </Link>
 
-              <div className="flex items-center gap-3 !mt-4">
-                <IoChatboxOutline className="text-[30px] text-[#ff5252]" />
+              <a
+                href="https://wa.me/917780908437?text=Hello%20KashmirBuy%20Support
+"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 !mt-4 hover:opacity-80 transition"
+              >
+                <IoChatboxOutline className="text-[30px] text-[#25D366]" />
                 <span className="text-[16px] font-semibold leading-tight">
                   Online Chat <br /> Expert Support
                 </span>
-              </div>
+              </a>
             </div>
 
             {/* Links */}
@@ -165,18 +190,16 @@ const Footer = () => {
         <div className="container mx-auto !px-4 flex flex-col md:flex-row items-center justify-between gap-4">
           {/* Social Icons */}
           <ul className="flex items-center gap-3">
-            {[
-              FaFacebookF,
-              AiOutlineYoutube,
-              FaInstagram,
-              FaXTwitter,
-              BsThreads,
-              BsWhatsapp,
-            ].map((Icon, i) => (
+            {socialLinks.map(({ icon: Icon, url }, i) => (
               <li key={i}>
-                <Link className="w-[35px] h-[35px] rounded-full border flex items-center justify-center hover:bg-[#ff5252] transition">
+                <a
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-[35px] h-[35px] rounded-full border flex items-center justify-center hover:bg-[#ff5252] transition"
+                >
                   <Icon className="text-[16px] hover:text-white transition" />
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
