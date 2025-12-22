@@ -63,7 +63,7 @@ export const createOrder = async (req, res) => {
       tax,
       totalAmount,
       delivery_address,
-      payment_status: "paid",
+      payment_status: "captured",
     });
 
     // Clear user cart
