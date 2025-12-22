@@ -165,12 +165,12 @@ export async function createProduct(req, res) {
       thirdSubCat: req.body.thirdSubCat,
       thirdSubCatId: req.body.thirdSubCatId,
       parentId: req.body.parentId,
-      countInStock: req.body.countInStock,
+      // countInStock: req.body.countInStock,
       rating: req.body.rating,
       isFeatured: req.body.isFeatured,
       discount: req.body.discount,
       // productRam: req.body.productRam,
-      size: req.body.size,
+      // size: req.body.size,
       // productWeight: req.body.productWeight,
     });
 
@@ -841,7 +841,6 @@ export async function removeImageFromCloudinary(request, response) {
   }
  }
 
-
 export async function searchProduct(req, res) {
   try {
     const query = req.params.query;
@@ -876,9 +875,6 @@ export async function searchProduct(req, res) {
     });
   }
 }
-
-
-
 
 export async function getLatestProducts(req, res) {
   try {

@@ -57,7 +57,7 @@ const productSchema = new mongoose.Schema({
   },
   countInStock: {
     type: Number,
-    required: true
+    default: 9999
   },
   rating: {
     type: Number,
@@ -69,26 +69,26 @@ const productSchema = new mongoose.Schema({
   },
   discount: {
     type: Number,
-    required: true
+    default:0
   },
-  productRam: [
-  {
-    type: String,
-    default: null
-  }
-],
-  size: [
-  {
-    type: String,
-    default: null
-  }
-],
-  productWeight: [
-  {
-    type: String,
-    default: null
-  }
-],
+//   productRam: [
+//   {
+//     type: String,
+//     default: null
+//   }
+// ],
+//   size: [
+//   {
+//     type: String,
+//     default: null
+//   }
+// ],
+//   productWeight: [
+//   {
+//     type: String,
+//     default: null
+//   }
+// ],
 dateCreated: {
     type: Date,
     default: Date.now
