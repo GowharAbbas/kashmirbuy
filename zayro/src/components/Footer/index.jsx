@@ -93,7 +93,7 @@ const Footer = () => {
               </Link>
 
               <a
-                href="https://wa.me/917780908437?text=Hello%20KashmirBuy%20Support
+                href="https://wa.me/919149899920?text=Hello%20KashmirBuy%20Support
 "
                 target="_blank"
                 rel="noopener noreferrer"
