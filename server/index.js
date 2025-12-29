@@ -30,6 +30,13 @@ app.post(
   razorpayWebhook
 );
 
+app.post(
+  "/payment/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  razorpayWebhook
+);
+
+
 /* NORMAL MIDDLEWARES */
 app.use(cors());
 app.use(cookieParser());
