@@ -1,6 +1,7 @@
 import OrderModel from "../models/order.model.js";
 import CartProductModel from "../models/cartproduct.model.js";
 import crypto from "crypto";
+import razorpayInstance from "../config/razorpay.js";
 
 export const createOrder = async (req, res) => {
   try {
@@ -101,6 +102,56 @@ export const requestReturn = async (req, res) => {
     res.json({ success: true, message: "Return request submitted" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
+export const syncOrderPaymentStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await OrderModel.findById(orderId);
+    if (!order) {
+      return res.json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    // ✅ If already confirmed, no need to sync
+    if (order.payment_status === "captured") {
+      return res.json({
+        success: true,
+        data: order,
+        message: "Order already confirmed",
+      });
+    }
+
+    // 🔥 Ask Razorpay directly
+    const payments = await razorpayInstance.orders.fetchPayments(
+      order.razorpay_order_id
+    );
+
+    const capturedPayment = payments.items.find(
+      (p) => p.status === "captured"
+    );
+
+    if (capturedPayment) {
+      order.payment_status = "captured";
+      order.order_status = "confirmed";
+      order.razorpay_payment_id = capturedPayment.id;
+      await order.save();
+    }
+
+    return res.json({
+      success: true,
+      data: order,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 

@@ -90,8 +90,11 @@ const Checkout = () => {
       order_id: order.id,
 
       handler: function () {
-        context.openAlertBox("success", "Payment successful!");
-        context.loadCartItems();
+        context.openAlertBox(
+          "success",
+          "Payment successful! Your order is being confirmed."
+        );
+        //context.loadCartItems();
         navigate("/my-orders");
       },
 
