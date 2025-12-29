@@ -17,23 +17,29 @@ export const razorpayWebhook = async (req, res) => {
 
   const payload = JSON.parse(req.body.toString());
 
-  if (payload.event === "payment.captured") {
-    const payment = payload.payload.payment.entity;
+  //console.log("🔥 RAZORPAY WEBHOOK RECEIVED:", payload.event);
 
-    const order = await OrderModel.findOne({
-      razorpay_order_id: payment.order_id,
-    });
 
-    if (order) {
-      order.payment_status = "captured";
-      order.razorpay_payment_id = payment.id;
-      order.order_status = "confirmed";
-      await order.save();
+  if (
+  payload.event === "order.paid" ||
+  payload.event === "payment.captured"
+) {
+  const payment = payload.payload.payment.entity;
 
-      // Clear cart
-      await CartProductModel.deleteMany({ userId: order.userId });
-    }
-  }
+  const order = await OrderModel.findOne({
+    razorpay_order_id: payment.order_id,
+  });
+
+  if (order && order.payment_status !== "captured") {
+  order.payment_status = "captured";
+  order.order_status = "confirmed";
+  order.razorpay_payment_id = payment.id;
+  await order.save();
+
+  await CartProductModel.deleteMany({ userId: order.userId });
+}
+
+}
 
   res.json({ status: "ok" });
 };
