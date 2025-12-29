@@ -26,15 +26,11 @@ const app = express();
 /* 🔴 WEBHOOK FIRST (RAW BODY) */
 app.post(
   "/api/payment/webhook",
-  bodyParser.raw({ type: "application/json" }),
+  bodyParser.raw({ type: "*/*" }),
   razorpayWebhook
 );
 
-app.post(
-  "/payment/webhook",
-  bodyParser.raw({ type: "application/json" }),
-  razorpayWebhook
-);
+
 
 
 /* NORMAL MIDDLEWARES */
