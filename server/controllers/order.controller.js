@@ -105,3 +105,48 @@ export const getAllOrders = async (req, res) => {
 };
 
 
+// New Function
+
+// ADD BELOW EXISTING FUNCTIONS
+
+export const requestReturn = async (req, res) => {
+  try {
+    const { orderId, productId } = req.body;
+    const userId = req.userId;
+
+    const order = await OrderModel.findOne({ _id: orderId, userId });
+    if (!order)
+      return res.json({ success: false, message: "Order not found" });
+
+    const diffDays =
+      (new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24);
+
+    if (diffDays > 2)
+      return res.json({
+        success: false,
+        message: "Return allowed only within 2 days",
+      });
+
+    const product = order.products.find(
+      (p) => p.productId.toString() === productId
+    );
+
+    if (!product || product.returnRequested)
+      return res.json({
+        success: false,
+        message: "Return already requested",
+      });
+
+    product.returnRequested = true;
+    product.returnRequestedAt = new Date();
+
+    await order.save();
+
+    res.json({ success: true, message: "Return request submitted" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+
+
