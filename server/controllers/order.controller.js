@@ -5,83 +5,41 @@ import crypto from "crypto";
 export const createOrder = async (req, res) => {
   try {
     const userId = req.userId;
-
     const {
       razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
       products,
       subTotal,
       tax,
       totalAmount,
-      delivery_address
+      delivery_address,
     } = req.body;
 
-    // Validate payment fields
-    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
-      return res.json({ success: false, message: "Missing payment details" });
-    }
-
-    // ------------------------------
-    // Verify Razorpay Payment
-    // ------------------------------
-    const sign = razorpay_order_id + "|" + razorpay_payment_id;
-
-    const expectedSign = crypto
-      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
-      .update(sign)
-      .digest("hex");
-
-    if (expectedSign !== razorpay_signature) {
-      return res.json({
-        success: false,
-        message: "Payment verification failed",
-      });
-    }
-
-    // ------------------------------
-    // FIX: Format products correctly
-    // ------------------------------
     const orderProducts = products.map((item) => ({
       productId: item.productId._id,
       name: item.productId.name,
-      image: item.productId.images, // array
+      image: item.productId.images,
       price: item.productId.price,
-      qty: item.quantity
+      qty: item.quantity,
     }));
 
-    // ------------------------------
-    // Save Order
-    // ------------------------------
     const order = await OrderModel.create({
       userId,
       products: orderProducts,
       razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
       subTotal,
       tax,
       totalAmount,
       delivery_address,
-      payment_status: "captured",
+      payment_status: "pending",
+      order_status: "pending",
     });
 
-    // Clear user cart
-    await CartProductModel.deleteMany({ userId });
-
-    return res.json({
-      success: true,
-      message: "Order placed successfully",
-      data: order,
-    });
-
+    res.json({ success: true, data: order });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: err.message,
-    });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
+
 
 
 export const getMyOrders = async (req, res) => {
@@ -105,7 +63,46 @@ export const getAllOrders = async (req, res) => {
 };
 
 
+// New Function
 
+export const requestReturn = async (req, res) => {
+  try {
+    const { orderId, productId } = req.body;
+    const userId = req.userId;
+
+    const order = await OrderModel.findOne({ _id: orderId, userId });
+    if (!order)
+      return res.json({ success: false, message: "Order not found" });
+
+    const diffDays =
+      (new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24);
+
+    if (diffDays > 2)
+      return res.json({
+        success: false,
+        message: "Return allowed only within 2 days",
+      });
+
+    const product = order.products.find(
+      (p) => p.productId.toString() === productId
+    );
+
+    if (!product || product.returnRequested)
+      return res.json({
+        success: false,
+        message: "Return already requested",
+      });
+
+    product.returnRequested = true;
+    product.returnRequestedAt = new Date();
+
+    await order.save();
+
+    res.json({ success: true, message: "Return request submitted" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
 
 
 

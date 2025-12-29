@@ -5,6 +5,7 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
+import bodyParser from "body-parser";
 import connectDB from "./config/connectDb.js";
 
 import userRouter from "./route/user.route.js";
@@ -18,15 +19,19 @@ import sliderSmall1Router from "./route/homeSliderSmall1.js";
 import sliderSmall2Router from "./route/homeSliderSmall2.js";
 import paymentRouter from "./route/payment.routes.js";
 import orderRouter from "./route/order.routes.js";
-
-
-
+import { razorpayWebhook } from "./controllers/razorpayWebhook.controller.js";
 
 const app = express();
 
-// Middlewares
+/* 🔴 WEBHOOK FIRST (RAW BODY) */
+app.post(
+  "/api/payment/webhook",
+  bodyParser.raw({ type: "application/json" }),
+  razorpayWebhook
+);
+
+/* NORMAL MIDDLEWARES */
 app.use(cors());
-app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
@@ -35,29 +40,25 @@ app.use(
   })
 );
 
-// Test route
-app.get("/", (request, response) => {
-  response.json({
-    message: "Server is running on port " + process.env.PORT,
-  });
-});
+/* JSON FOR ALL OTHER ROUTES */
+app.use(express.json());
 
-app.use('/api/user',userRouter);
-app.use('/api/category',categoryRouter);
-app.use('/api/product',productRouter);
-app.use('/api/cart',cartRouter);
-app.use('/api/myList',myListRouter);
-app.use('/api/address',addressRouter);
-app.use('/api/slider',sliderRouter);
-app.use('/api/sliderSmall1',sliderSmall1Router);
-app.use('/api/sliderSmall2',sliderSmall2Router);
-app.use('/api/payment', paymentRouter);
-app.use('/api/order', orderRouter);
+// Routes
+app.use("/api/user", userRouter);
+app.use("/api/category", categoryRouter);
+app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/myList", myListRouter);
+app.use("/api/address", addressRouter);
+app.use("/api/slider", sliderRouter);
+app.use("/api/sliderSmall1", sliderSmall1Router);
+app.use("/api/sliderSmall2", sliderSmall2Router);
+app.use("/api/payment", paymentRouter);
+app.use("/api/order", orderRouter);
 
-
-// Connect to DB and start server
+// Start server
 connectDB().then(() => {
   app.listen(process.env.PORT, () => {
-    console.log("🚀 Server is running on port", process.env.PORT);
+    console.log("🚀 Server running on port", process.env.PORT);
   });
 });

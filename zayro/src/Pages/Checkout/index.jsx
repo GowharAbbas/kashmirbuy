@@ -70,6 +70,16 @@ const Checkout = () => {
 
     const order = orderRes.data;
 
+    // 2️⃣ CREATE ORDER IN DATABASE (PENDING)
+    await postData("/api/order/create", {
+      razorpay_order_id: order.id,
+      products: items,
+      subTotal: subtotal,
+      tax,
+      totalAmount,
+      delivery_address: address,
+    });
+
     // 2️⃣ Razorpay options
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
