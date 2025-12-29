@@ -25,7 +25,7 @@ const app = express();
 
 /* 🔴 WEBHOOK FIRST (RAW BODY) */
 app.post(
-  "/api/payment/webhook",
+  ["/api/payment/webhook", "/payment/webhook"],
   bodyParser.raw({ type: "*/*" }),
   razorpayWebhook
 );
