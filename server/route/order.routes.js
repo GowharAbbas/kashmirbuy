@@ -14,6 +14,6 @@ router.get("/invoice/:id", generateInvoice);
 
 router.post("/request-return", auth, requestReturn);
 
-router.post("verify-payment", auth, verifyPayment);
+router.post("/verify-payment", auth, verifyPayment);
 
 export default router;
