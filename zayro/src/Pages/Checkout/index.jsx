@@ -34,10 +34,10 @@ const Checkout = () => {
   const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 35 : 0;
 
   // 🔴 TEMPORARY FIXED DISCOUNT FOR TESTING
-  const discount = 40;
+  //const discount = 40;
 
   // Razorpay minimum ₹1
-  const totalAmount = Math.max(subtotal + tax + shipping - discount, 1);
+  const totalAmount = Math.max(subtotal + tax + shipping, 1);
 
   // -------------------------------
   // HANDLERS
@@ -233,10 +233,10 @@ const Checkout = () => {
               <span>₹{tax}</span>
             </div>
 
-            <div className="flex justify-between text-sm !mb-2 text-green-600">
+            {/* <div className="flex justify-between text-sm !mb-2 text-green-600">
               <span>Test Discount</span>
               <span>- ₹{discount}</span>
-            </div>
+            </div> */}
 
             <hr className="!my-3" />
 
