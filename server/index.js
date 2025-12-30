@@ -23,16 +23,6 @@ import { razorpayWebhook } from "./controllers/razorpayWebhook.controller.js";
 
 const app = express();
 
-/* 🔴 WEBHOOK FIRST (RAW BODY) */
-app.post(
-  ["/api/payment/webhook", "/payment/webhook"],
-  bodyParser.raw({ type: "*/*" }),
-  razorpayWebhook
-);
-
-
-
-
 /* NORMAL MIDDLEWARES */
 app.use(cors());
 app.use(cookieParser());
