@@ -5,7 +5,11 @@ import { addHomeSlide, deleteSlide, getHomeSlides, getSlide, removeImageFromClou
 
 const sliderRouter = Router();
 
-sliderRouter.post('/uploadImages', auth, upload.array('images'), uploadImages);
+// sliderRouter.post('/uploadImages', auth, upload.array('images'), uploadImages);
+
+// new
+
+sliderRouter.post('/uploadImages', auth, uploadImages);
 
 sliderRouter.post("/", auth, addHomeSlide);
 

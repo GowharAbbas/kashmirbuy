@@ -6,7 +6,10 @@ import { addHomeSlideSmall1, deleteSlideSmall1, getHomeSlidesSmall1, getSlideSma
 
 const sliderSmall1Router = Router();
 
-sliderSmall1Router.post('/uploadImages', auth, upload.array('images'), uploadImages);
+// sliderSmall1Router.post('/uploadImages', auth, upload.array('images'), uploadImages);
+
+sliderSmall1Router.post('/uploadImages', auth, uploadImages);
+
 
 sliderSmall1Router.post("/", auth, addHomeSlideSmall1);
 

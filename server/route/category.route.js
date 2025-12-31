@@ -15,8 +15,12 @@ import {
 
 const categoryRouter = Router();
 
-// ✅ Make sure this is POST, not PUT
-categoryRouter.post('/uploadImages', auth, upload.array('images'), uploadImages);
+
+// categoryRouter.post('/uploadImages', auth, upload.array('images'), uploadImages);
+
+// new
+
+categoryRouter.post('/uploadImages', auth, uploadImages);
 
 categoryRouter.post('/', auth, createCategory);
 categoryRouter.get('/', getCategories);
@@ -25,7 +29,13 @@ categoryRouter.get('/get/count/subcat', getSubCategoriesCount);
 categoryRouter.get('/:id', getCategory);
 categoryRouter.delete('/deleteImage', auth, removeImageFromCloudinary);
 categoryRouter.delete('/:id', auth, deleteCategory);
-categoryRouter.put('/update/:id', auth, upload.array('images'), updateCategory);
+
+
+// categoryRouter.put('/update/:id', auth, upload.array('images'), updateCategory);
+
+// new
+
+categoryRouter.put('/update/:id', auth, updateCategory);
 
 export default categoryRouter;
 

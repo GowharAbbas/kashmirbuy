@@ -5,7 +5,11 @@ import { createProduct, deleteProduct, getAllFeaturedProducts, getAllProducts, g
 
 const productRouter = Router();
 
-productRouter.post('/uploadImages',auth,upload.array('images'),uploadImages);
+//productRouter.post('/uploadImages',auth,upload.array('images'),uploadImages);
+
+productRouter.post('/uploadImages', auth, uploadImages);
+
+
 productRouter.post('/create',auth,createProduct);
 productRouter.get('/latest', getLatestProducts);
 productRouter.get('/getAllProducts',getAllProducts);

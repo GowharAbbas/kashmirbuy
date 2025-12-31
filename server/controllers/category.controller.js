@@ -11,85 +11,143 @@ cloudinary.config({
 
 var imagesArr = [];
 
-export async function uploadImages(request, response) {
-    try {
-        imagesArr = [];
+// export async function uploadImages(request, response) {
+//     try {
+//         imagesArr = [];
 
-        const files = request.files;
+//         const files = request.files;
 
-        if (!files || files.length === 0) {
-            return response.status(400).json({
-                message: "No files uploaded",
-                error: true,
-                success: false
-            });
-        }
+//         if (!files || files.length === 0) {
+//             return response.status(400).json({
+//                 message: "No files uploaded",
+//                 error: true,
+//                 success: false
+//             });
+//         }
 
-        const options = {
-            use_filename: true,
-            unique_filename: false,
-            overwrite: false
-        };
+//         const options = {
+//             use_filename: true,
+//             unique_filename: false,
+//             overwrite: false
+//         };
 
-        for (let i = 0; i < files.length; i++) {
-            const result = await cloudinary.uploader.upload(files[i].path, options);
-            imagesArr.push(result.secure_url);
+//         for (let i = 0; i < files.length; i++) {
+//             const result = await cloudinary.uploader.upload(files[i].path, options);
+//             imagesArr.push(result.secure_url);
 
-            fs.unlinkSync(files[i].path);
-        }
+//             fs.unlinkSync(files[i].path);
+//         }
 
-        return response.status(200).json({
-            message: "Images uploaded successfully",
-            images: imagesArr,
-            error: false,
-            success: true
-        });
+//         return response.status(200).json({
+//             message: "Images uploaded successfully",
+//             images: imagesArr,
+//             error: false,
+//             success: true
+//         });
 
-    } catch (error) {
-        return response.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        });
+//     } catch (error) {
+//         return response.status(500).json({
+//             message: error.message || error,
+//             error: true,
+//             success: false
+//         });
+//     }
+// }
+
+// new
+
+
+export async function uploadImages(req, res) {
+  try {
+    const { images } = req.body; // array of Cloudinary URLs
+
+    if (!images || !Array.isArray(images)) {
+      return res.status(400).json({
+        success: false,
+        message: "Images array required",
+      });
     }
+
+    return res.status(200).json({
+      success: true,
+      images,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
 
-export async function createCategory(request, response) {
-    try {
-        const category = new CategoryModel({
-            name: request.body.name,
-            images: imagesArr,
-            parentId: request.body.parentId,
-            parentCatName: request.body.parentCatName,
-        });
 
-        const savedCategory = await category.save();
 
-        if (!savedCategory) {
-            return response.status(500).json({
-                message: "Category not created",
-                error: true,
-                success: false
-            });
-        }
 
-        imagesArr = []; // Clear the images array after saving
+// export async function createCategory(request, response) {
+//     try {
+//         const category = new CategoryModel({
+//             name: request.body.name,
+//             images: imagesArr,
+//             parentId: request.body.parentId,
+//             parentCatName: request.body.parentCatName,
+//         });
 
-        return response.status(200).json({
-            message: "Category created successfully",
-            error: false,
-            success: true,
-            category: savedCategory
-        });
+//         const savedCategory = await category.save();
 
-    } catch (error) {
-        return response.status(500).json({
-            message: error.message || error,
-            error: true,
-            success: false
-        });
-    }
+//         if (!savedCategory) {
+//             return response.status(500).json({
+//                 message: "Category not created",
+//                 error: true,
+//                 success: false
+//             });
+//         }
+
+//         imagesArr = []; // Clear the images array after saving
+
+//         return response.status(200).json({
+//             message: "Category created successfully",
+//             error: false,
+//             success: true,
+//             category: savedCategory
+//         });
+
+//     } catch (error) {
+//         return response.status(500).json({
+//             message: error.message || error,
+//             error: true,
+//             success: false
+//         });
+//     }
+// }
+
+//new
+
+
+export async function createCategory(req, res) {
+  try {
+    const { name, images, parentId, parentCatName } = req.body;
+
+    const category = new CategoryModel({
+      name,
+      images, // already Cloudinary URLs
+      parentId: parentId || null,
+      parentCatName: parentCatName || null,
+    });
+
+    const savedCategory = await category.save();
+
+    return res.status(200).json({
+      success: true,
+      category: savedCategory,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
 }
+
 
 export async function getCategories(request, response) {
   try {
@@ -295,90 +353,119 @@ export async function deleteCategory(request, response) {
   }
 }
 
-export async function updateCategory(request, response) {
+// export async function updateCategory(request, response) {
+//   try {
+//     const { id } = request.params;
+//     const category = await CategoryModel.findById(id);
+
+//     if (!category) {
+//       return response.status(404).json({
+//         message: "Category not found",
+//         success: false,
+//         error: true,
+//       });
+//     }
+
+//     const { name, parentId, parentCatName } = request.body;
+
+//     // ✅ 1. Collect existing images sent from frontend
+//     let frontendImages = [];
+//     if (request.body.existingImages) {
+//   if (Array.isArray(request.body.existingImages)) {
+//     frontendImages = request.body.existingImages;
+//   } else {
+//     frontendImages = [request.body.existingImages];
+//   }
+// }
+
+
+//     // ✅ 2. Identify and delete removed old images
+//     const removedImages = category.images.filter(
+//       (img) => !frontendImages.includes(img)
+//     );
+
+//     for (const imgUrl of removedImages) {
+//       try {
+//         const parts = imgUrl.split("/");
+//         const fileName = parts.pop();
+//         const publicId = fileName.split(".")[0];
+//         await cloudinary.uploader.destroy(publicId);
+//       } catch (err) {
+//         console.warn("Failed to delete old image:", err.message);
+//       }
+//     }
+
+//     // ✅ 3. Upload new files (if any)
+//     if (request.files && request.files.length > 0) {
+//       for (const file of request.files) {
+//         const result = await cloudinary.uploader.upload(file.path, {
+//           use_filename: true,
+//           unique_filename: false,
+//           overwrite: false,
+//         });
+//         frontendImages.push(result.secure_url);
+//         fs.unlinkSync(file.path);
+//       }
+//     }
+
+//     // ✅ 4. Update category in DB
+//     const updatedCategory = await CategoryModel.findByIdAndUpdate(
+//       id,
+//       {
+//         name: name || category.name,
+//         images: frontendImages,
+//         parentId: parentId || category.parentId,
+//         parentCatName: parentCatName || category.parentCatName,
+//       },
+//       { new: true }
+//     ).lean();
+
+//     // ✅ 5. Return in correct format for frontend
+//     return response.status(200).json({
+//       message: "Category updated successfully",
+//       success: true,
+//       error: false,
+//       data: updatedCategory, // ✅ frontend expects this key
+//     });
+//   } catch (error) {
+//     console.error("Update Category Error:", error);
+//     return response.status(500).json({
+//       message: error.message || error,
+//       success: false,
+//       error: true,
+//     });
+//   }
+// }
+
+//new
+
+export async function updateCategory(req, res) {
   try {
-    const { id } = request.params;
-    const category = await CategoryModel.findById(id);
+    const { id } = req.params;
+    const { name, images, parentId, parentCatName } = req.body;
 
-    if (!category) {
-      return response.status(404).json({
-        message: "Category not found",
-        success: false,
-        error: true,
-      });
-    }
-
-    const { name, parentId, parentCatName } = request.body;
-
-    // ✅ 1. Collect existing images sent from frontend
-    let frontendImages = [];
-    if (request.body.existingImages) {
-  if (Array.isArray(request.body.existingImages)) {
-    frontendImages = request.body.existingImages;
-  } else {
-    frontendImages = [request.body.existingImages];
-  }
-}
-
-
-    // ✅ 2. Identify and delete removed old images
-    const removedImages = category.images.filter(
-      (img) => !frontendImages.includes(img)
-    );
-
-    for (const imgUrl of removedImages) {
-      try {
-        const parts = imgUrl.split("/");
-        const fileName = parts.pop();
-        const publicId = fileName.split(".")[0];
-        await cloudinary.uploader.destroy(publicId);
-      } catch (err) {
-        console.warn("Failed to delete old image:", err.message);
-      }
-    }
-
-    // ✅ 3. Upload new files (if any)
-    if (request.files && request.files.length > 0) {
-      for (const file of request.files) {
-        const result = await cloudinary.uploader.upload(file.path, {
-          use_filename: true,
-          unique_filename: false,
-          overwrite: false,
-        });
-        frontendImages.push(result.secure_url);
-        fs.unlinkSync(file.path);
-      }
-    }
-
-    // ✅ 4. Update category in DB
     const updatedCategory = await CategoryModel.findByIdAndUpdate(
       id,
       {
-        name: name || category.name,
-        images: frontendImages,
-        parentId: parentId || category.parentId,
-        parentCatName: parentCatName || category.parentCatName,
+        name,
+        images,
+        parentId,
+        parentCatName,
       },
       { new: true }
-    ).lean();
+    );
 
-    // ✅ 5. Return in correct format for frontend
-    return response.status(200).json({
-      message: "Category updated successfully",
+    return res.status(200).json({
       success: true,
-      error: false,
-      data: updatedCategory, // ✅ frontend expects this key
+      data: updatedCategory,
     });
   } catch (error) {
-    console.error("Update Category Error:", error);
-    return response.status(500).json({
-      message: error.message || error,
+    return res.status(500).json({
       success: false,
-      error: true,
+      message: error.message,
     });
   }
 }
-
 
 
 
