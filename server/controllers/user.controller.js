@@ -244,58 +244,104 @@ export async function logoutController(request, response){
   }
 }
 
+// export async function userAvatarController(request, response) {
+//   try {
+//     const userId = request.userId;
+//     const files = request.files;
+
+//     if (!files || files.length === 0) {
+//       return response.status(400).json({ message: "No files uploaded" });
+//     }
+
+//     // 1. Get current user data
+//     const user = await UserModel.findById(userId);
+
+//     // 2. Delete old avatar from Cloudinary (if exists)
+//     if (user?.avatar) {
+//       const urlArr = user.avatar.split("/");
+//       const imageWithExtension = urlArr[urlArr.length - 1]; // e.g., 1755338015468_20201210_120127.jpg
+//       const publicId = `avatars/${imageWithExtension.split(".")[0]}`; // folder + filename without extension
+
+//       await cloudinary.uploader.destroy(publicId);
+//     }
+
+//     let uploadedImage = null;
+
+//     // 3. Upload new avatar
+//     for (const file of files) {
+//       const result = await cloudinary.uploader.upload(file.path, {
+//         folder: "avatars", // keep organized
+//         use_filename: true,
+//         unique_filename: false,
+//         overwrite: true,
+//       });
+
+//       uploadedImage = result.secure_url;
+
+//       // Delete local file after upload
+//       fs.unlinkSync(file.path);
+//     }
+
+//     // 4. Update DB with new avatar URL
+//     const updatedUser = await UserModel.findByIdAndUpdate(
+//       userId,
+//       { avatar: uploadedImage },
+//       { new: true }
+//     ).select("avatar _id name email");
+
+//     return response.status(200).json(updatedUser);
+
+//   } catch (error) {
+//     return response.status(500).json({
+//       message: error.message || error,
+//       error: true,
+//       success: false,
+//     });
+//   }
+// }
+
+// new
+
 export async function userAvatarController(request, response) {
   try {
     const userId = request.userId;
-    const files = request.files;
+    const { avatar } = request.body; // Cloudinary URL
 
-    if (!files || files.length === 0) {
-      return response.status(400).json({ message: "No files uploaded" });
+    if (!avatar) {
+      return response.status(400).json({
+        success: false,
+        message: "Avatar URL is required",
+      });
     }
 
-    // 1. Get current user data
+    // get user
     const user = await UserModel.findById(userId);
 
-    // 2. Delete old avatar from Cloudinary (if exists)
+    // delete old avatar from cloudinary (if exists)
     if (user?.avatar) {
-      const urlArr = user.avatar.split("/");
-      const imageWithExtension = urlArr[urlArr.length - 1]; // e.g., 1755338015468_20201210_120127.jpg
-      const publicId = `avatars/${imageWithExtension.split(".")[0]}`; // folder + filename without extension
-
+      const parts = user.avatar.split("/");
+      const imageName = parts.pop().split(".")[0];
+      const folder = parts.pop();
+      const publicId = `${folder}/${imageName}`;
       await cloudinary.uploader.destroy(publicId);
     }
 
-    let uploadedImage = null;
-
-    // 3. Upload new avatar
-    for (const file of files) {
-      const result = await cloudinary.uploader.upload(file.path, {
-        folder: "avatars", // keep organized
-        use_filename: true,
-        unique_filename: false,
-        overwrite: true,
-      });
-
-      uploadedImage = result.secure_url;
-
-      // Delete local file after upload
-      fs.unlinkSync(file.path);
-    }
-
-    // 4. Update DB with new avatar URL
+    // save new avatar
     const updatedUser = await UserModel.findByIdAndUpdate(
       userId,
-      { avatar: uploadedImage },
+      { avatar },
       { new: true }
-    ).select("avatar _id name email");
+    ).select("avatar name email");
 
-    return response.status(200).json(updatedUser);
+    return response.status(200).json({
+      success: true,
+      avatar: updatedUser.avatar,
+    });
 
   } catch (error) {
     return response.status(500).json({
-      message: error.message || error,
-      error: true,
       success: false,
+      message: error.message,
     });
   }
 }
@@ -629,31 +675,7 @@ export async function refreshToken(request, response){
     });
   }
 }
-
-// export async function userDetails(request,response){
-//   try {
-
-//     const userId = request.userId
-
-//     const user = await UserModel.findById(userId).select('-password -refresh_token')
-
-//     return response.status(200).json({
-//       message : 'user details',
-//       data: user,
-//       error: false,
-//       succcess: true
-//     })
     
-//   } catch (error) {
-//     return response.status(500).json({
-//       message: "something went wrong",
-//       error: true,
-//       success: false
-//     });
-//   }
-// }
-    
-
 export async function userDetails(request, response) {
   try {
     const userId = request.userId;
