@@ -168,4 +168,36 @@ export const requestReturn = async (req, res) => {
 };
 
 
+export const paymentFailed = async (req, res) => {
+  try {
+    const { razorpay_order_id } = req.body;
+
+    if (!razorpay_order_id) {
+      return res.status(400).json({
+        success: false,
+        message: "razorpay_order_id is required",
+      });
+    }
+
+    // ❌ DELETE the pending order
+    await OrderModel.findOneAndDelete({
+      razorpay_order_id,
+      payment_status: "pending",
+      order_status: "pending",
+    });
+
+    return res.json({
+      success: true,
+      message: "Failed order removed",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+
+
 
