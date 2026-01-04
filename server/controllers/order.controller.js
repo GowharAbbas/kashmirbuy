@@ -140,10 +140,10 @@ export const requestReturn = async (req, res) => {
     const diffDays =
       (new Date() - new Date(order.createdAt)) / (1000 * 60 * 60 * 24);
 
-    if (diffDays > 2)
+    if (diffDays > 5)
       return res.json({
         success: false,
-        message: "Return allowed only within 2 days",
+        message: "The return window for this item has expired.",
       });
 
     const product = order.products.find(
