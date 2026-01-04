@@ -101,7 +101,7 @@ const Navigation = () => {
                                   <Link
                                     key={third._id}
                                     to={`/productListing?third=${third.name}`}
-                                    className="block text-[12px] py-1 hover:text-[#ff5252]"
+                                    className="block border border-gray-200 rounded-md !p-1 text-[12px] !py-1 hover:text-[#ff5252]"
                                     onClick={closeMenuOnSelect}
                                   >
                                     {third.name}
@@ -133,22 +133,22 @@ const Navigation = () => {
                 {/* Dropdown */}
                 {cat.Children?.length > 0 && (
                   <div className="absolute top-full left-0 !mt-1 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-[160px]">
-                    <ul>
+                    <ul className="relative">
                       {cat.Children.map((sub) => (
-                        <li key={sub._id} className="relative group/sub">
-                          <Button className="!w-full text-left !px-4 !py-2 !rounded-none !text-[rgba(0,0,0,0.8)] !text-[13px] hover:!text-[#ff5252] hover:!bg-gray-50">
+                        <li key={sub._id} className="group/sub">
+                          <Button className="!w-full text-left !px-3 !py-2 !rounded-none !text-[rgba(0,0,0,0.8)] !text-[13px] hover:!text-[#ff5252] hover:!bg-gray-50">
                             {sub.name}
                           </Button>
 
-                          {/* 👉 Third Level (Clickable) */}
+                          {/* ✅ Third Level ALWAYS opens from TOP */}
                           {sub.Children?.length > 0 && (
-                            <div className="absolute top-0 left-full ml-1 bg-white shadow-lg rounded-md opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all z-50 min-w-[160px]">
+                            <div className="absolute top-0 left-full bg-white shadow-lg rounded-md opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all z-50 min-w-[160px]">
                               {sub.Children.map((third) => (
                                 <Link
                                   key={third._id}
                                   to={`/productListing?third=${third.name}`}
                                 >
-                                  <Button className="!w-full !px-4 !py-2 !rounded-none !text-[rgba(0,0,0,0.8)] !text-[13px] hover:!bg-gray-100 hover:!text-[#ff5252]">
+                                  <Button className="!w-full !text-left !px-3 !py-2 !rounded-none !text-[rgba(0,0,0,0.8)] !text-[13px] hover:!bg-gray-100 hover:!text-[#ff5252]">
                                     {third.name}
                                   </Button>
                                 </Link>
