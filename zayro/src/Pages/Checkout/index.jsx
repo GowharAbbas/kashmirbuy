@@ -27,8 +27,8 @@ const Checkout = () => {
     return acc + price * item.quantity;
   }, 0);
 
-  const tax = Math.round(subtotal * 0.02);
-  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 35 : 0;
+  const tax = Math.round(subtotal * 0.0);
+  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 50 : 0;
   const totalAmount = Math.max(subtotal + tax + shipping, 1);
 
   const onChange = (e) => {
@@ -214,6 +214,13 @@ const Checkout = () => {
             </div>
 
             <hr className="!my-3" />
+
+            <div className="flex justify-between text-sm !mb-2">
+              <span>Shipping</span>
+              <span>{shipping === 0 ? "Free" : `₹${shipping}`}</span>
+            </div>
+
+            <hr className="!my-2" />
 
             <div className="flex justify-between font-bold !mb-4">
               <span>Total</span>

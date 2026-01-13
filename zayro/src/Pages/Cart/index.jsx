@@ -13,10 +13,10 @@ const CartPage = () => {
     return acc + price * item.quantity;
   }, 0);
 
-  const tax = Math.round(subtotal * 0.02);
+  const tax = Math.round(subtotal * 0.0);
 
   // ✅ FIX: shipping should be 0 if cart is empty
-  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 35 : 0;
+  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 50 : 0;
 
   const total = subtotal + tax + shipping;
 

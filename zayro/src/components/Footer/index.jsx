@@ -22,6 +22,7 @@ import CartPanel from "../CartPanel";
 import { MyContext } from "../../App";
 import AppStoreSection from "../AppStoreSection";
 import { RiRefund2Line } from "react-icons/ri";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   const context = useContext(MyContext);
@@ -29,19 +30,12 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: FaFacebookF,
-      url: "https://www.facebook.com/kashmirbuy.com",
+      url: "https://www.facebook.com/share/1APhxLArCg/",
     },
-    {
-      icon: AiOutlineYoutube,
-      url: "https://www.youtube.com/",
-    },
+
     {
       icon: FaInstagram,
-      url: "https://www.instagram.com/",
-    },
-    {
-      icon: FaXTwitter,
-      url: "https://twitter.com/",
+      url: "https://www.instagram.com/kashmirbuy.com_?igsh=MWtzbGxlNG9ndGJtcw==",
     },
   ];
 
@@ -54,7 +48,7 @@ const Footer = () => {
             <div className="group flex flex-col items-center">
               <FaShippingFast className="text-[40px] transition duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-semibold !mt-3">Free Shipping</h3>
-              <p className="text-[12px] font-medium">Orders Over ₹2000</p>
+              <p className="text-[12px] font-medium">Orders Over ₹1500</p>
             </div>
 
             <div className="group flex flex-col items-center">
@@ -68,7 +62,9 @@ const Footer = () => {
             <div className="group flex flex-col items-center">
               <RiRefund2Line className="text-[40px] transition duration-300 group-hover:text-[#ff5252] group-hover:-translate-y-1" />
               <h3 className="text-[16px] font-semibold mt-3">If Return</h3>
-              <p className="text-[12px] font-medium">Refund In Hours</p>
+              <p className="text-[12px] font-medium">
+                Refund In 3 Working Days
+              </p>
             </div>
 
             <div className="group flex flex-col items-center">
@@ -99,9 +95,9 @@ const Footer = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 !mt-4 hover:opacity-80 transition"
               >
-                <IoChatboxOutline className="text-[30px] text-[#25D366]" />
+                <FaWhatsapp className="text-[30px] text-[#25D366]" />
                 <span className="text-[16px] font-semibold leading-tight">
-                  Online Chat <br /> Expert Support
+                  Customer <br /> Care
                 </span>
               </a>
             </div>
@@ -116,11 +112,13 @@ const Footer = () => {
                   {[
                     "Clothing",
                     "Electronic",
-                    "Bags & Trolly",
+                    "Bags",
                     "Footwear",
                     "Jewellery",
                     "Cosmetics",
                     "Groceries",
+                    "Toys",
+                    "Ketchenware",
                     "More......",
                   ].map((item, i) => (
                     <li key={i}>
@@ -139,9 +137,8 @@ const Footer = () => {
                 <ul className="space-y-2">
                   {[
                     "Delivery In Minimum Time",
-                    "Open Box Delivery",
                     "Return Available",
-                    "Refund In Hours",
+                    "Refund In 3 Working Days",
                     "Best Quality Product",
                     "Secure Payment",
                     "Minimum Price",
