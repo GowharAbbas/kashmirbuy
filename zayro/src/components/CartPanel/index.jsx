@@ -17,7 +17,7 @@ const CartPanel = () => {
   const tax = Math.round(subtotal * 0.0);
 
   // ✅ FIX HERE
-  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 50 : 0;
+  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 25 : 0;
 
   const total = subtotal + tax + shipping;
 
