@@ -23,10 +23,10 @@ const HomeSlider = () => {
           loop={true}
           slidesPerView={1}
           navigation={true}
-          speed={1600} // smoother transition
+          speed={2500} // smoother transition
           modules={[Navigation, Autoplay]}
           autoplay={{
-            delay: 10000,
+            delay: 5000,
             disableOnInteraction: false,
             pauseOnMouseEnter: true,
           }}
@@ -71,6 +71,11 @@ const HomeSlider = () => {
       {/* Navigation Button Styling */}
       <style>
         {`
+          .homeSwiper .swiper-button-prev,
+           .homeSwiper .swiper-button-next {
+           display: none !important;
+           }
+          
           .homeSwiper .swiper-wrapper {
             transition-timing-function: cubic-bezier(0.35, 0.01, 0.28, 1) !important;
           }

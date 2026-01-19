@@ -2,22 +2,32 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
-import { Navigation } from "swiper/modules";
+//import { Navigation } from "swiper/modules";
 import ProductItem from "../ProductItem";
+
+import "swiper/css/effect-fade";
+import { Navigation, Autoplay, EffectFade } from "swiper/modules";
 
 const ProductsSlider = ({ products = [] }) => {
   return (
     <div className="productsSlider !py-3 relative">
       {products.length > 0 ? (
         <Swiper
-          loop={false}
+          loop={true}
           navigation={true}
-          modules={[Navigation]}
+          autoplay={{
+            delay: 0,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          speed={5000}
+          modules={[Navigation, Autoplay, EffectFade]}
           breakpoints={{
             0: { slidesPerView: 3, spaceBetween: 10 },
             600: { slidesPerView: 4, spaceBetween: 15 },
             1024: { slidesPerView: 6, spaceBetween: 20 },
           }}
+          effect="slide"
           className="mySwiper"
         >
           {products.map((product) => (
@@ -34,6 +44,10 @@ const ProductsSlider = ({ products = [] }) => {
 
       <style>
         {`
+        .productsSlider .swiper-button-prev,
+.productsSlider .swiper-button-next {
+  display: none !important;
+}
           .productsSlider .swiper-button-prev,
           .productsSlider .swiper-button-next {
             width: 32px;

@@ -118,7 +118,7 @@ const Footer = () => {
                     "Cosmetics",
                     "Groceries",
                     "Toys",
-                    "Ketchenware",
+                    "Kitchenware",
                     "More......",
                   ].map((item, i) => (
                     <li key={i}>

@@ -24,9 +24,13 @@ const AdsBannerSlider2 = () => {
       <Swiper
         loop={true}
         navigation={true}
-        autoplay={false}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
         effect="slide"
-        speed={900} // smoother transition
+        speed={2500} // smoother transition
         modules={[Navigation, Autoplay, EffectFade]}
         className="adsSwiper"
         breakpoints={{
@@ -85,6 +89,10 @@ const AdsBannerSlider2 = () => {
 
       <style>
         {`
+        .adsSwiper .swiper-button-prev,
+.adsSwiper .swiper-button-next {
+  display: none !important;
+}
           .adsSwiper .swiper-button-prev,
           .adsSwiper .swiper-button-next {
             width: 30px;
