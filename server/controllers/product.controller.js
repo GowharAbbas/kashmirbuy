@@ -182,7 +182,15 @@ export async function getAllProducts(request, response){
 
     
 
-    const products = await ProductModel.find().populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+    // const products = await ProductModel.find().populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+
+    const products = await ProductModel.find()
+  .sort({ createdAt: -1 }) // 🔥 NEWEST FIRST
+  .populate("category")
+  .skip((page - 1) * perPage)
+  .limit(perPage)
+  .exec();
+
 
     if(!products){
        response.status(500).json({
@@ -228,7 +236,7 @@ export async function getAllProductsByCatId(request, response){
 
     const products = await ProductModel.find({
       catId: request.params.id
-    }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+    }).sort({ createdAt: -1 }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
 
     if(!products){
        response.status(500).json({
@@ -272,7 +280,7 @@ export async function getAllProductsByCatName(request, response){
 
     const products = await ProductModel.find({
       catName: request.query.catName
-    }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+    }).sort({ createdAt: -1 }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
 
     if(!products){
        response.status(500).json({
@@ -404,7 +412,7 @@ export async function getAllProductsByThirSubdCatId(request, response){
 
     const products = await ProductModel.find({
       thirdSubCatId: request.params.id
-    }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+    }).sort({ createdAt: -1 }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
 
     if(!products){
        response.status(500).json({
@@ -448,7 +456,7 @@ export async function getAllProductsByThirdSubCatName(request, response){
 
     const products = await ProductModel.find({
       thirdSubCat: request.query.thirdSubCat
-    }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
+    }).sort({ createdAt: -1 }).populate("category").skip((page - 1) * perPage).limit(perPage).exec();
 
     if(!products){
        response.status(500).json({
