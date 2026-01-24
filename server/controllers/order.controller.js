@@ -198,6 +198,51 @@ export const paymentFailed = async (req, res) => {
   }
 };
 
+//New For Cod
+
+export const placeCODOrder = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { products, subTotal, tax, totalAmount, delivery_address } = req.body;
+
+    if (!products || products.length === 0) {
+      return res.json({ success: false, message: "Cart is empty" });
+    }
+
+    const orderProducts = products.map((item) => ({
+      productId: item.productId._id,
+      name: item.productId.name,
+      image: item.productId.images,
+      price: item.productId.price,
+      qty: item.quantity,
+    }));
+
+    const order = await OrderModel.create({
+      userId,
+      products: orderProducts,
+      subTotal,
+      tax,
+      totalAmount,
+      delivery_address,
+      payment_method: "cod",
+      payment_status: "pending",
+      order_status: "confirmed",
+    });
+
+    // ✅ CLEAR CART
+    await CartProductModel.deleteMany({ userId });
+
+    return res.json({
+      success: true,
+      message: "Order placed successfully (Cash on Delivery)",
+      data: order,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 
 
 

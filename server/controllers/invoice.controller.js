@@ -28,7 +28,9 @@ export const generateInvoice = async (req, res) => {
 
     /* ================= ORDER DETAILS ================= */
     doc.fontSize(12).text(`Order ID: ${order._id}`);
-    doc.text(`Payment ID: ${order.razorpay_payment_id}`);
+    
+    //New Change for Cod
+    doc.text(`Payment ID: ${order.razorpay_payment_id || "Cash On Delivery"}`);
     doc.text(
       `Date: ${new Date(order.createdAt).toLocaleDateString()}`
     );
@@ -93,6 +95,8 @@ export const generateInvoice = async (req, res) => {
       .text("------------------------------------------------------------");
 
     doc.moveDown(0.5);
+
+    doc.fontSize(22).text("KashmirBuy.com", { align: "center" });
 
     doc.fontSize(12).text("To,");
     doc.text(`${order.delivery_address.fullName}`);

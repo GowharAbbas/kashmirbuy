@@ -41,6 +41,14 @@ const orderSchema = new mongoose.Schema(
       country: String,
     },
 
+    //New for Cod
+
+    payment_method: {
+      type: String,
+      enum: ["razorpay", "cod"],
+      default: "razorpay",
+    },
+
     payment_status: { type: String, default: "paid" },
     order_status: { type: String, default: "confirmed" },
   },

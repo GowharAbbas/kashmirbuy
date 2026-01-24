@@ -113,6 +113,38 @@ const Checkout = () => {
     rzp.open();
   };
 
+  ///New for cod
+
+  const handleCOD = async () => {
+    if (items.length === 0) {
+      context.openAlertBox("error", "Your cart is empty");
+      return;
+    }
+
+    for (const key in address) {
+      if (!address[key]) {
+        context.openAlertBox("error", `Please enter ${key}`);
+        return;
+      }
+    }
+
+    const res = await postData("/api/order/cod", {
+      products: items,
+      subTotal: subtotal,
+      tax,
+      totalAmount,
+      delivery_address: address,
+    });
+
+    if (res?.success) {
+      context.openAlertBox("success", "Order placed successfully (COD)");
+      context.loadCartItems(); // ✅ clears cart in UI
+      navigate("/my-orders");
+    } else {
+      context.openAlertBox("error", res?.message || "COD failed");
+    }
+  };
+
   return (
     <section className="!py-10 bg-[#f5f5f5] !mt-5">
       <div className="container flex flex-col lg:flex-row gap-4">
@@ -229,6 +261,17 @@ const Checkout = () => {
 
             <Button className="btn-org btn-lg w-full" onClick={handlePayment}>
               Complete Your Payment
+            </Button>
+
+            {/* New for Cod */}
+
+            <Button
+              className="btn-org btn-lg w-full !mt-3"
+              variant="outlined"
+              color="success"
+              onClick={handleCOD}
+            >
+              Cash On Delivery
             </Button>
           </div>
           <p className="!mt-4 text-sm text-gray-600">
