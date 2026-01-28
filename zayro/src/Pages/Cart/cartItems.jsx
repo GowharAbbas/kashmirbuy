@@ -140,7 +140,7 @@ const CartItems = (props) => {
           {product?.oldPrice && product.oldPrice > product.price && (
             <span className="text-[#ff5252] opacity-70 text-[12px] font-[500]">
               {Math.round(
-                ((product.oldPrice - product.price) / product.oldPrice) * 100
+                ((product.oldPrice - product.price) / product.oldPrice) * 100,
               )}
               % OFF
             </span>

@@ -81,10 +81,10 @@ const ProductDetailRight = ({ product }) => {
       {/* SIZE NOTE */}
       <div className="bg-orange-50 border-l-4 border-orange-400 !mt-3 !px-3 !py-2 rounded-md">
         <p className="text-[13px] md:text-[14px] font-semibold text-orange-700">
-          📌 Product Size Details:
+          📌 Product Size and Quantity:
           <span className="font-normal text-orange-600 !ml-1">
-            All size information is mentioned in the product name and
-            description.
+            Size details are included in the product name. Quantity can be
+            updated from View Cart.
           </span>
         </p>
       </div>
