@@ -220,7 +220,7 @@ const Home = () => {
             {/* ✅ FAST DELIVERY BADGE (FIXED & ALWAYS VISIBLE) */}
             <div className="absolute bottom-4 w-full flex justify-center z-30">
               <span className="!px-6 !py-2 rounded-full bg-[#ff5252] text-white text-sm sm:text-base font-bold shadow-xl">
-                PRIORITY EXPRESS DELIVERY WITHIN 2 HOURS
+                DELIVERY WITHIN 2 HOURS
               </span>
             </div>
           </div>
