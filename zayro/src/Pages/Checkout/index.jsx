@@ -275,7 +275,7 @@ const Checkout = () => {
             </Button>
           </div>
           <p className="!mt-4 text-sm text-gray-600">
-            Payment will be processed in the name of CEO{" "}
+            Payment Processed to Founder{" "}
             <span className="inline-block !px-2 !py-0.5 bg-gray-100 border rounded text-black font-semibold">
               Afreen Kifayat
             </span>
