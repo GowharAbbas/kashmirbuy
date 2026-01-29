@@ -406,3 +406,23 @@ button .MuiCircularProgress-root{
   transition: transform 0.4s ease;
 }
 
+
+@keyframes magamGlow {
+  0% {
+    background: #ff5252;
+    box-shadow: 0 0 15px rgba(255, 82, 82, 0.6);
+  }
+  50% {
+    background: #ff7a7a;
+    box-shadow: 0 0 25px rgba(255, 122, 122, 0.9);
+  }
+  100% {
+    background: #ff5252;
+    box-shadow: 0 0 15px rgba(255, 82, 82, 0.6);
+  }
+}
+
+.magam-animate {
+  animation: magamGlow 2.5s ease-in-out infinite;
+}
+

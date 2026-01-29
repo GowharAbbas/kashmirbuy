@@ -28,7 +28,7 @@ const Checkout = () => {
   }, 0);
 
   const tax = Math.round(subtotal * 0.0);
-  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 25 : 0;
+  const shipping = items.length === 0 ? 0 : subtotal < 1500 ? 10 : 0;
   const totalAmount = Math.max(subtotal + tax + shipping, 1);
 
   const onChange = (e) => {

@@ -38,7 +38,7 @@ const Home = () => {
   const fetchCategoryProducts = async () => {
     if (!tabValue) return;
     const res = await fetchDataFromApi(
-      `/api/product/getAllProductsByCatName?catName=${tabValue}`
+      `/api/product/getAllProductsByCatName?catName=${tabValue}`,
     );
     if (res?.success) {
       setCategoryProducts(res.products);
@@ -68,7 +68,7 @@ const Home = () => {
     setLoadingAll(true);
 
     const res = await fetchDataFromApi(
-      `/api/product/getAllProducts?page=${pageNum}&perPage=${LIMIT}`
+      `/api/product/getAllProducts?page=${pageNum}&perPage=${LIMIT}`,
     );
 
     if (res?.success) {
@@ -77,7 +77,7 @@ const Home = () => {
       // prevent duplicates
       setAllProducts((prev) => {
         const cleaned = newData.filter(
-          (p) => !prev.find((x) => x._id === p._id)
+          (p) => !prev.find((x) => x._id === p._id),
         );
         return [...prev, ...cleaned];
       });
@@ -103,7 +103,7 @@ const Home = () => {
           setPage((prev) => prev + 1);
         }
       },
-      { threshold: 1 }
+      { threshold: 1 },
     );
 
     observer.observe(sentinelRef.current);
@@ -156,45 +156,72 @@ const Home = () => {
         </div>
       </section>
 
-      {/* MID BANNER - YOUR CUSTOM BEAUTIFUL GRADIENT */}
-      <section className="bg-white !pt-0 !pb-8">
+      {/* MID BANNER – FAST DELIVERY MAP VIEW */}
+      <section className="bg-white !pt-0 !pb-10">
         <div className="container flex justify-center">
           <div
             className="
-        !mb-10 w-[95%] sm:w-[85%] md:w-[80%]
-        rounded-2xl shadow-[0_8px_25px_rgba(255,82,82,0.25)]
-        relative overflow-hidden text-center cursor-pointer
-        transition-all duration-500
-        hover:shadow-[0_12px_35px_rgba(255,82,82,0.35)]
-
-        animate-gradient
-        bg-[length:300%_300%]
-        bg-gradient-to-r from-[#ffe1e1] via-[#ffd4d4] to-[#ffc8c8]
-
-        hover:scale-[1.01]
-        parallax
+        relative w-[95%] sm:w-[85%] md:w-[80%]
+        h-[340px] sm:h-[380px]
+        rounded-2xl overflow-hidden
+        bg-gradient-to-br from-[#fff1f1] via-[#ffeaea] to-[#ffdede]
+        shadow-[0_10px_30px_rgba(255,82,82,0.25)]
       "
           >
-            {/* Floating Pattern Elements */}
-            <div className="absolute top-[-20px] left-[-20px] w-28 h-28 bg-[#ff525230] rounded-full blur-2xl animate-float-slow"></div>
-            <div className="absolute bottom-[-20px] right-[-20px] w-32 h-32 bg-[#ff525220] rounded-full blur-3xl animate-float"></div>
+            {/* Soft map grid */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#ffcccc_1px,transparent_0)] bg-[size:22px_22px] opacity-40"></div>
 
-            {/* Content */}
-            <div className="!px-6 !py-10 sm:py-12 fade-in">
-              <h1 className="text-[26px] sm:text-[38px] font-extrabold text-[#B22222] tracking-wide">
-                KashmirBuy
-                <span className="text-[16px] sm:text-[22px] font-bold text-[#ff5252]">
-                  .com
-                </span>
-              </h1>
+            {/* FAST DELIVERY ZONE */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-[220px] h-[220px] sm:w-[260px] sm:h-[260px] rounded-full border-2 border-dashed border-[#ff5252] bg-[#ff525210] animate-pulse"></div>
+            </div>
 
-              <p className="!mt-4 text-[14px] sm:text-[18px] font-medium text-gray-700 leading-relaxed fade-in-delayed">
-                Discover the Joy of Shopping with
-                <span className="text-[#ff5252] font-semibold">
-                  {" "}
-                  KashmirBuy<span className="text-[10px]">.com</span>
-                </span>
-              </p>
+            {/* Connection Lines */}
+            <div className="absolute top-1/2 left-1/2 w-[32%] h-[2px] bg-[#ff5252]/40"></div>
+            <div className="absolute top-1/2 left-[18%] w-[32%] h-[2px] bg-[#ff5252]/40"></div>
+            <div className="absolute top-[18%] left-1/2 h-[32%] w-[2px] bg-[#ff5252]/40"></div>
+            <div className="absolute bottom-[22%] left-1/2 h-[32%] w-[2px] bg-[#ff5252]/40"></div>
+
+            {/* Center – Magam */}
+            <div className="absolute inset-0 flex items-center justify-center z-20">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center text-white font-bold text-lg magam-animate">
+                Magam
+              </div>
+            </div>
+
+            {/* Right – Beerwah */}
+            <div className="absolute right-[8%] top-1/2 -translate-y-1/2 z-20">
+              <div className="!px-4 !py-1 rounded-full bg-white shadow text-sm font-semibold text-gray-700">
+                Beerwah
+              </div>
+            </div>
+
+            {/* Left – Pattan */}
+            <div className="absolute left-[8%] top-1/2 -translate-y-1/2 z-20">
+              <div className="!px-4 !py-1 rounded-full bg-white shadow text-sm font-semibold text-gray-700">
+                Pattan
+              </div>
+            </div>
+
+            {/* Top – Narbal */}
+            <div className="absolute top-[8%] left-1/2 -translate-x-1/2 z-20">
+              <div className="!px-4 !py-1 rounded-full bg-white shadow text-sm font-semibold text-gray-700">
+                Narbal
+              </div>
+            </div>
+
+            {/* Bottom – Kunzer (MOVED UP) */}
+            <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 z-20">
+              <div className="!px-4 py-1 rounded-full bg-white shadow text-sm font-semibold text-gray-700">
+                Kunzer
+              </div>
+            </div>
+
+            {/* ✅ FAST DELIVERY BADGE (FIXED & ALWAYS VISIBLE) */}
+            <div className="absolute bottom-4 w-full flex justify-center z-30">
+              <span className="!px-6 !py-2 rounded-full bg-[#ff5252] text-white text-sm sm:text-base font-bold shadow-xl">
+                FAST DELIVERY IN THIS AREA
+              </span>
             </div>
           </div>
         </div>
